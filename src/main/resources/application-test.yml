@@ -12,7 +12,7 @@ spring:
         format_sql: true
 
 cors:
-  allow-origin: http://localhost:5173
+  allow-origin: http://localhost:3000
 
 jwt:
   secret: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
