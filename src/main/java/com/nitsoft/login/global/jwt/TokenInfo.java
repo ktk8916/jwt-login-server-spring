@@ -1,17 +1,58 @@
 package com.nitsoft.login.global.jwt;
 
 import lombok.Builder;
+import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-public class TokenInfo {
+import java.util.Collection;
+
+@Getter
+public class TokenInfo implements UserDetails {
 
     private Long id;
-    private String username;
+    private String email;
     private String nickname;
 
     @Builder
-    public TokenInfo(Long id, String username, String nickname) {
+    public TokenInfo(Long id, String email, String nickname) {
         this.id = id;
-        this.username = username;
+        this.email = email;
         this.nickname = nickname;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

@@ -5,8 +5,8 @@ import lombok.Builder;
 
 @Builder
 public record SignupRequest(
-        @NotBlank(message = "username is required")
-        String username,
+        @NotBlank(message = "email is required")
+        String email,
         @NotBlank(message = "password is required")
         String password,
         @NotBlank(message = "nickname is required")

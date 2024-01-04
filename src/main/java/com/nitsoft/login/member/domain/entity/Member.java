@@ -1,5 +1,6 @@
 package com.nitsoft.login.member.domain.entity;
 
+import com.nitsoft.login.global.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,25 +13,31 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
+    private String email;
     private String password;
     private String nickname;
+
+    public static Member fromId(Long id){
+        Member member = new Member();
+        member.id = id;
+        return member;
+    }
 
     public void setSequenceId(Long id){
         this.id = id;
     }
 
-    public boolean checkLoginInfo(String username, String password){
-        return this.username.equals(username) && this.password.equals(password);
+    public boolean checkLoginInfo(String email, String password){
+        return this.email.equals(email) && this.password.equals(password);
     }
 
     @Builder
-    public Member(String username, String password, String nickname) {
-        this.username = username;
+    public Member(String email, String password, String nickname) {
+        this.email = email;
         this.password = password;
         this.nickname = nickname;
     }

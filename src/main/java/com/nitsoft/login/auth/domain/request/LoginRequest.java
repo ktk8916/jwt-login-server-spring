@@ -6,8 +6,8 @@ import lombok.Builder;
 @Builder
 public record LoginRequest(
 
-        @NotBlank(message = "username is required")
-        String username,
+        @NotBlank(message = "email is required")
+        String email,
         @NotBlank(message = "password is required")
         String password
 ) {
