@@ -11,10 +11,10 @@ public enum ExceptionType {
     // auth
     MEMBER_NOT_FOUND(HttpStatus.UNAUTHORIZED, "member not found"),
     EMAIL_ALREADY_REGISTERED(HttpStatus.BAD_REQUEST, "email already registered"),
-    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "invalid refresh token"),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "invalid password"),
 
     // jwt
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "invalid refresh token"),
     ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "access token expired"),
     INVALID_ACCESS_TOKEN(HttpStatus.BAD_REQUEST, "invalid access token"),
 
