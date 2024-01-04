@@ -5,6 +5,7 @@ import com.nitsoft.login.board.domain.response.BoardDetailResponse;
 import com.nitsoft.login.board.domain.response.BoardSearchResponse;
 import com.nitsoft.login.board.service.BoardService;
 import com.nitsoft.login.global.jwt.TokenInfo;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class BoardController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createBoard(
             @AuthenticationPrincipal TokenInfo tokenInfo,
-            @RequestBody BoardRequest request
+            @RequestBody @Valid BoardRequest request
     ){
         boardService.createBoard(tokenInfo.getId(), request);
     }
@@ -47,7 +48,7 @@ public class BoardController {
     public void updateBoard(
             @AuthenticationPrincipal TokenInfo tokenInfo,
             @PathVariable long boardId,
-            @RequestBody BoardRequest request
+            @RequestBody @Valid BoardRequest request
     ){
         boardService.updateBoard(boardId, tokenInfo.getId(), request);
     }
