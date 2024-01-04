@@ -60,6 +60,10 @@ public class AuthService {
 
     @Transactional
     public TokenResponse renew(String refreshToken) {
+        if(!jwtService.isValidToken(refreshToken)){
+            throw new ApiException(INVALID_REFRESH_TOKEN);
+        }
+
         RefreshTokenLog refreshTokenLog = refreshTokenLogRepository.findByRefreshTokenFetchMember(refreshToken)
                 .orElseThrow(() -> new ApiException(INVALID_REFRESH_TOKEN));
 
