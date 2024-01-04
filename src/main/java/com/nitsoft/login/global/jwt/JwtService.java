@@ -23,7 +23,7 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
 
         claims.put("id", member.getId());
-        claims.put("username", member.getUsername());
+        claims.put("email", member.getEmail());
         claims.put("nickname", member.getNickname());
 
         return buildToken(claims, REFRESH_TOKEN_EXPIRATION_TIME);
@@ -40,7 +40,7 @@ public class JwtService {
         Claims claims = extractClaims(accessToken);
         return TokenInfo.builder()
                 .id(claims.get("id", Long.class))
-                .username(claims.get("username", String.class))
+                .email(claims.get("email", String.class))
                 .nickname(claims.get("nickname", String.class))
                 .build();
     }
