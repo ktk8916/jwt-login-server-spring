@@ -15,7 +15,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 public class CustomRestControllerAdvice {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e){
-        log.error(e.getMessage());
+        log.error("RuntimeException : {}", e.getMessage());
         ExceptionResponse response = ExceptionResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(response);
