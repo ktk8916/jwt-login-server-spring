@@ -25,7 +25,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     public BoardDetailResponse getById(long boardId) {
-        Board board = findByIdFetchMember(boardId);
+        Board board = findNotDeletedBoardByIdFetchMember(boardId);
         return BoardDetailResponse.fromEntity(board);
     }
 
@@ -51,7 +51,7 @@ public class BoardService {
 
     @Transactional
     public void updateBoard(long boardId, long memberId, BoardRequest request) {
-        Board board = findByIdFetchMember(boardId);
+        Board board = findNotDeletedBoardByIdFetchMember(boardId);
 
         if(!checkBoardOwner(board, memberId)){
             throw new ApiException(UNAUTHORIZED_CONTENT_OWNER);
@@ -76,8 +76,8 @@ public class BoardService {
                 .orElseThrow(() -> new ApiException(CONTENT_NOT_FOUND));
     }
 
-    private Board findByIdFetchMember(long boardId){
-        return boardRepository.findByIdFetchMember(boardId)
+    private Board findNotDeletedBoardByIdFetchMember(long boardId){
+        return boardRepository.findNotDeletedBoardByIdFetchMember(boardId)
                 .orElseThrow(() -> new ApiException(CONTENT_NOT_FOUND));
     }
 

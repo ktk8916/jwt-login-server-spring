@@ -26,7 +26,8 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository {
                 .innerJoin(board.member, member)
                 .fetchJoin()
                 .where(
-                        titleContains(keyword)
+                        titleContains(keyword),
+                        board.deletedAt.isNull()
                 )
                 .limit(Pageable.getPageSize())
                 .offset(Pageable.getOffset())

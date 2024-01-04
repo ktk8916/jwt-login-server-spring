@@ -11,6 +11,7 @@ public interface BoardRepository extends JpaRepository<Board, Long>, CustomBoard
     @Query("select b " +
             "from Board b " +
             "inner join fetch b.member " +
-            "where b.id = :boardId")
-    Optional<Board> findByIdFetchMember(Long boardId);
+            "where b.id = :boardId " +
+            "and b.deletedAt is null")
+    Optional<Board> findNotDeletedBoardByIdFetchMember(Long boardId);
 }
