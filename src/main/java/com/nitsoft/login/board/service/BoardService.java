@@ -14,8 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.nitsoft.login.global.exception.ExceptionType.MEMBER_NOT_FOUND;
-import static com.nitsoft.login.global.exception.ExceptionType.UNAUTHORIZED_CONTENT_OWNER;
+import static com.nitsoft.login.global.exception.ExceptionType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class BoardService {
 
     public BoardSearchResponse searchByCondition(String keyword, Pageable pageable) {
         Page<BoardThumbnailDto> boards = boardRepository.findByCondition(keyword, pageable);
-        return BoardSearchResponse.of(boards.getContent(), 0, 0, 0L);
+        return BoardSearchResponse.of(boards.getContent(), boards.getNumber(), boards.getSize(), boards.getTotalElements());
     }
 
     public void createBoard(long memberId, BoardRequest request) {
@@ -54,13 +53,28 @@ public class BoardService {
         board.update(request.title(), request.content());
     }
 
+    @Transactional
+    public void deleteBoard(long boardId, long memberId) {
+        Board board = findById(boardId);
+
+        if(!checkBoardOwner(board, memberId)){
+            throw new ApiException(UNAUTHORIZED_CONTENT_OWNER);
+        }
+
+        board.delete();
+    }
+
+    private Board findById(long boardId){
+        return boardRepository.findById(boardId)
+                .orElseThrow(() -> new ApiException(CONTENT_NOT_FOUND));
+    }
+
     private Board findByIdFetchMember(long boardId){
         return boardRepository.findByIdFetchMember(boardId)
-                .orElseThrow(() -> new ApiException(MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new ApiException(CONTENT_NOT_FOUND));
     }
 
     private boolean checkBoardOwner(Board board, long memberId){
         return board.getMember().getId().equals(memberId);
     }
-
 }

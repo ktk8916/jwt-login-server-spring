@@ -7,10 +7,11 @@ import com.nitsoft.login.board.service.BoardService;
 import com.nitsoft.login.global.jwt.TokenInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@RestControllerAdvice
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/boards")
 public class BoardController {
@@ -27,12 +28,13 @@ public class BoardController {
         return boardService.searchByCondition(keyword, pageRequest);
     }
 
-    @GetMapping("/{boardId")
+    @GetMapping("/{boardId}")
     public BoardDetailResponse getById(@PathVariable long boardId){
         return boardService.getById(boardId);
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void createBoard(
             @AuthenticationPrincipal TokenInfo tokenInfo,
             @RequestBody BoardRequest request
@@ -41,6 +43,7 @@ public class BoardController {
     }
 
     @PutMapping("/{boardId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateBoard(
             @AuthenticationPrincipal TokenInfo tokenInfo,
             @PathVariable long boardId,
@@ -50,10 +53,11 @@ public class BoardController {
     }
 
     @DeleteMapping("/{boardId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBoard(
             @AuthenticationPrincipal TokenInfo tokenInfo,
             @PathVariable long boardId
     ){
-
+            boardService.deleteBoard(boardId, tokenInfo.getId());
     }
 }
