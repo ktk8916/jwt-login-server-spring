@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static com.nitsoft.login.global.exception.ExceptionType.*;
 
 @Service
@@ -28,13 +30,18 @@ public class BoardService {
     }
 
     public BoardSearchResponse searchByCondition(String keyword, Pageable pageable) {
-        Page<BoardThumbnailDto> boards = boardRepository.findByCondition(keyword, pageable);
-        return BoardSearchResponse.of(boards.getContent(), boards.getNumber(), boards.getSize(), boards.getTotalElements());
+        Page<Board> boards = boardRepository.findByCondition(keyword, pageable);
+
+        List<BoardThumbnailDto> thumbnails = boards.stream()
+                .map(BoardThumbnailDto::fromEntity)
+                .toList();
+
+        return BoardSearchResponse.of(thumbnails, boards.getNumber(), boards.getSize(), boards.getTotalElements());
     }
 
     public void createBoard(long memberId, BoardRequest request) {
         Board board = Board.builder()
-                .title(request.content())
+                .title(request.title())
                 .content(request.content())
                 .member(Member.fromId(memberId))
                 .build();

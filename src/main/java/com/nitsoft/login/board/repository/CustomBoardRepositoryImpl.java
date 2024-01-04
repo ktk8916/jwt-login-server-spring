@@ -1,7 +1,6 @@
 package com.nitsoft.login.board.repository;
 
-import com.nitsoft.login.board.domain.dto.BoardThumbnailDto;
-import com.nitsoft.login.board.domain.dto.QBoardThumbnailDto;
+import com.nitsoft.login.board.domain.entity.Board;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -21,30 +20,27 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository {
     }
 
     @Override
-    public Page<BoardThumbnailDto> findByCondition(String keyword, Pageable Pageable) {
-        List<BoardThumbnailDto> boards = queryFactory
-                .select(new QBoardThumbnailDto(board.id, board.title, board.member.nickname))
-                .from(board)
-                .where(
-                        titleOrContentContains(keyword)
-                )
+    public Page<Board> findByCondition(String keyword, Pageable Pageable) {
+        List<Board> boards = queryFactory
+                .selectFrom(board)
                 .innerJoin(board.member, member)
                 .fetchJoin()
+                .where(
+                        titleContains(keyword)
+                )
                 .limit(Pageable.getPageSize())
                 .offset(Pageable.getOffset())
                 .fetch();
 
         Long totalSize = queryFactory.select(board.count())
                 .from(board)
-                .where(titleOrContentContains(keyword))
+                .where(titleContains(keyword))
                 .fetchOne();
 
         return new PageImpl<>(boards, Pageable, totalSize);
     }
 
-    private BooleanExpression titleOrContentContains(String keyword) {
-        return keyword == null ?
-                null :
-                board.title.contains(keyword).or(board.content.contains(keyword));
+    private BooleanExpression titleContains(String keyword) {
+        return keyword == null ? null : board.title.contains(keyword);
     }
 }

@@ -1,18 +1,21 @@
 package com.nitsoft.login.board.domain.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
-import lombok.NoArgsConstructor;
+import com.nitsoft.login.board.domain.entity.Board;
+import com.nitsoft.login.board.domain.response.BoardSearchResponse;
+import lombok.Builder;
 
-@NoArgsConstructor
-public class BoardThumbnailDto {
-    private Long id;
-    private String title;
-    private String nickname;
-
-    @QueryProjection
-    public BoardThumbnailDto(Long id, String title, String nickname) {
-        this.id = id;
-        this.title = title;
-        this.nickname = nickname;
+@Builder
+public record BoardThumbnailDto(
+    Long id,
+    String title,
+    String nickname
+) {
+    public static BoardThumbnailDto fromEntity(Board board){
+        return BoardThumbnailDto.builder()
+                .id(board.getId())
+                .title(board.getTitle())
+                .nickname(board.getMember().getNickname())
+                .build();
     }
+
 }
