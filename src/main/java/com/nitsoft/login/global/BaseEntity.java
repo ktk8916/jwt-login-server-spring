@@ -17,12 +17,10 @@ public class BaseEntity {
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
-    private LocalDateTime modifiedAt;
+    private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
-    private boolean isDeleted;
 
-    public void delete(){
+    public void checkDelete(){
         this.deletedAt = LocalDateTime.now();
-        this.isDeleted = true;
     }
 }
