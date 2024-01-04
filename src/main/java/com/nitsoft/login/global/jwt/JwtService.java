@@ -45,11 +45,20 @@ public class JwtService {
                 .build();
     }
 
-    private Claims extractClaims(String accessToken) {
+    public boolean isValidToken(String token) {
+        try {
+            Claims claims = extractClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private Claims extractClaims(String token) {
         return (Claims) Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY.getBytes())
                 .build()
-                .parse(accessToken)
+                .parse(token)
                 .getBody();
     }
 
