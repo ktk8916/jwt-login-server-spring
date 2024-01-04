@@ -20,7 +20,7 @@ public class BaseEntity {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
 
-    public void checkDelete(){
+    public void delete(){
         this.deletedAt = LocalDateTime.now();
     }
 }
