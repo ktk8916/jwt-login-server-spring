@@ -10,6 +10,7 @@ import com.nitsoft.login.global.jwt.JwtService;
 import com.nitsoft.login.member.domain.entity.Member;
 import com.nitsoft.login.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,18 +25,19 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final RefreshTokenLogRepository refreshTokenLogRepository;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public TokenResponse signup(SignupRequest request){
         Optional<Member> optionalMember = memberRepository.findByEmail(request.email());
 
         if(optionalMember.isPresent()){
-            throw new ApiException(USERNAME_ALREADY_REGISTERED);
+            throw new ApiException(EMAIL_ALREADY_REGISTERED);
         }
 
         Member member = Member.builder()
                 .email(request.email())
-                .password(request.password())
+                .password(passwordEncoder.encode(request.password()))
                 .nickname(request.nickname())
                 .build();
 
@@ -46,8 +48,12 @@ public class AuthService {
 
     @Transactional
     public TokenResponse login(LoginRequest request){
-        Member member = memberRepository.findByEmailAndPassword(request.email(), request.password())
+        Member member = memberRepository.findByEmail(request.email())
                 .orElseThrow(() -> new ApiException(MEMBER_NOT_FOUND));
+
+        if(!passwordEncoder.matches(request.password(), member.getPassword())){
+            throw new ApiException(INVALID_PASSWORD);
+        }
 
         return issueToken(member);
     }
