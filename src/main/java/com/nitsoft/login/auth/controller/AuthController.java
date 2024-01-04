@@ -2,7 +2,7 @@ package com.nitsoft.login.auth.controller;
 
 import com.nitsoft.login.auth.domain.request.LoginRequest;
 import com.nitsoft.login.auth.domain.request.SignupRequest;
-import com.nitsoft.login.auth.domain.response.LoginResponse;
+import com.nitsoft.login.auth.domain.response.TokenResponse;
 import com.nitsoft.login.auth.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +18,17 @@ public class AuthController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public LoginResponse signup(@RequestBody @Valid SignupRequest request){
+    public TokenResponse signup(@RequestBody @Valid SignupRequest request){
         return authService.signup(request);
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody @Valid LoginRequest request){
+    public TokenResponse login(@RequestBody @Valid LoginRequest request){
         return authService.login(request);
+    }
+
+    @GetMapping("/renew")
+    public TokenResponse renew(){
+        return authService.renew("aaa");
     }
 }
