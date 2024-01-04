@@ -77,12 +77,16 @@ public class AuthService {
         String accessToken = jwtService.generateAccessToken(member);
         String refreshToken = jwtService.generateRefreshToken(member);
 
-        RefreshTokenLog tokenLog = RefreshTokenLog.builder()
-                .member(member)
-                .refreshToken(refreshToken)
-                .build();
-
-        refreshTokenLogRepository.save(tokenLog);
+        refreshTokenLogRepository.findByMember(member)
+                .ifPresentOrElse(
+                        refreshTokenLog -> refreshTokenLog.updateRefreshToken(refreshToken),
+                        () -> {
+                            RefreshTokenLog tokenLog = RefreshTokenLog.builder()
+                                    .member(member)
+                                    .refreshToken(refreshToken)
+                                    .build();
+                            refreshTokenLogRepository.save(tokenLog);
+                        });
 
         return TokenResponse.of(accessToken, refreshToken);
     }
