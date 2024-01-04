@@ -34,11 +34,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = authHeader.substring(7);
 
-        if(!jwtService.isValidToken(token)){
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         TokenInfo tokenInfo = jwtService.extractMember(token);
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(tokenInfo, null, tokenInfo.getAuthorities());

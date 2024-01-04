@@ -14,6 +14,10 @@ public enum ExceptionType {
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "invalid refresh token"),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "invalid password"),
 
+    // jwt
+    ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "access token expired"),
+    INVALID_ACCESS_TOKEN(HttpStatus.BAD_REQUEST, "invalid access token"),
+
     //board
     UNAUTHORIZED_CONTENT_OWNER(HttpStatus.FORBIDDEN, "unauthorized content owner"),
     CONTENT_NOT_FOUND(HttpStatus.NOT_FOUND, "content not found"),

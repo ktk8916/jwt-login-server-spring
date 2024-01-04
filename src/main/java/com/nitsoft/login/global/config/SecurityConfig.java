@@ -1,6 +1,7 @@
 package com.nitsoft.login.global.config;
 
 import com.nitsoft.login.global.filter.JwtAuthenticationFilter;
+import com.nitsoft.login.global.filter.JwtExceptionHandlerFilter;
 import com.nitsoft.login.global.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,6 +52,7 @@ public class SecurityConfig {
                 }))
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtExceptionHandlerFilter(), JwtAuthenticationFilter.class)
                 .authorizeHttpRequests(
                         authRequest -> authRequest
                                 .requestMatchers("/api/auth/**").permitAll()
