@@ -1,6 +1,5 @@
 package com.nitsoft.login.auth.domain.entity;
 
-import com.nitsoft.login.global.BaseEntity;
 import com.nitsoft.login.member.domain.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LoginInformation extends BaseEntity {
+public class RefreshTokenLog {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,7 +23,7 @@ public class LoginInformation extends BaseEntity {
     }
 
     @Builder
-    public LoginInformation(Member member, String refreshToken) {
+    public RefreshTokenLog(Member member, String refreshToken) {
         this.member = member;
         this.refreshToken = refreshToken;
     }
