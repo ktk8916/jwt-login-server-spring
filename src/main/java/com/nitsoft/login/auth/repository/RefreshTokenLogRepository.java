@@ -11,7 +11,7 @@ public interface RefreshTokenLogRepository extends JpaRepository<RefreshTokenLog
 
     @Query("select l " +
             "from RefreshTokenLog l " +
-            "inner join l.member " +
+            "inner join fetch l.member " +
             "where l.refreshToken = :refreshToken")
     Optional<RefreshTokenLog> findByRefreshTokenFetchMember(String refreshToken);
 
