@@ -26,16 +26,11 @@ public class JwtExceptionHandlerFilter extends OncePerRequestFilter {
         }
     }
 
-    private void setExceptionResponse(HttpServletResponse response, ExceptionType type){
+    private void setExceptionResponse(HttpServletResponse response, ExceptionType type) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         response.setStatus(type.getHttpStatus().value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         ExceptionResponse exceptionResponse = ExceptionResponse.of(type.getHttpStatus(), type.getMessage());
-        try{
-            response.getWriter().write(objectMapper.writeValueAsString(exceptionResponse));
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+        objectMapper.writeValue(response.getWriter(), exceptionResponse);
     }
-
 }
