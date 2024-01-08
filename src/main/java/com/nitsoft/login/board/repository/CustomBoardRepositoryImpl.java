@@ -35,7 +35,10 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository {
 
         Long totalSize = queryFactory.select(board.count())
                 .from(board)
-                .where(titleContains(keyword))
+                .where(
+                        titleContains(keyword),
+                        board.deletedAt.isNull()
+                )
                 .fetchOne();
 
         return new PageImpl<>(boards, Pageable, totalSize);
