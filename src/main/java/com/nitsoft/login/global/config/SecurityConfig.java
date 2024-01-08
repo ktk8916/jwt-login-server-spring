@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +29,7 @@ public class SecurityConfig {
     private final JwtService jwtService;
 
     @Value("${cors.allow-origin}")
-    private String allowOrigin;
+    private List<String> allowOrigin;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -45,7 +46,7 @@ public class SecurityConfig {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedHeaders(Collections.singletonList("*"));
                     config.setAllowedMethods(Collections.singletonList("*"));
-                    config.setAllowedOriginPatterns(Collections.singletonList(allowOrigin));
+                    config.setAllowedOriginPatterns(allowOrigin);
                     config.setAllowCredentials(true);
                     config.setMaxAge(3600L);
                     return config;
