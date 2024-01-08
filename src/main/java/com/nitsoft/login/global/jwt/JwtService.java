@@ -26,14 +26,14 @@ public class JwtService {
         claims.put("email", member.getEmail());
         claims.put("nickname", member.getNickname());
 
-        return buildToken(claims, REFRESH_TOKEN_EXPIRATION_TIME);
+        return buildToken(claims, ACCESS_TOKEN_EXPIRATION_TIME);
     }
 
     public String generateRefreshToken(Member member){
         Map<String, Object> claims = new HashMap<>();
 
         claims.put("id", member.getId());
-        return buildToken(claims, ACCESS_TOKEN_EXPIRATION_TIME);
+        return buildToken(claims, REFRESH_TOKEN_EXPIRATION_TIME);
     }
 
     public TokenInfo extractMember(String accessToken){
