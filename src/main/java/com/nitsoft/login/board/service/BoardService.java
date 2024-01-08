@@ -39,14 +39,15 @@ public class BoardService {
         return BoardSearchResponse.of(thumbnails, boards.getNumber(), boards.getSize(), boards.getTotalElements());
     }
 
-    public void createBoard(long memberId, BoardRequest request) {
+    public BoardThumbnailDto createBoard(long memberId, BoardRequest request) {
         Board board = Board.builder()
                 .title(request.title())
                 .content(request.content())
                 .member(Member.fromId(memberId))
                 .build();
 
-        boardRepository.save(board);
+        Board savedBoard = boardRepository.save(board);
+        return BoardThumbnailDto.fromEntity(savedBoard);
     }
 
     @Transactional

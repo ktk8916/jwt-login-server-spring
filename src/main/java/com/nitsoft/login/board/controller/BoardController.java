@@ -1,5 +1,6 @@
 package com.nitsoft.login.board.controller;
 
+import com.nitsoft.login.board.domain.dto.BoardThumbnailDto;
 import com.nitsoft.login.board.domain.request.BoardRequest;
 import com.nitsoft.login.board.domain.response.BoardDetailResponse;
 import com.nitsoft.login.board.domain.response.BoardSearchResponse;
@@ -36,11 +37,11 @@ public class BoardController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createBoard(
+    public BoardThumbnailDto createBoard(
             @AuthenticationPrincipal TokenInfo tokenInfo,
             @RequestBody @Valid BoardRequest request
     ){
-        boardService.createBoard(tokenInfo.getId(), request);
+        return boardService.createBoard(tokenInfo.getId(), request);
     }
 
     @PutMapping("/{boardId}")
