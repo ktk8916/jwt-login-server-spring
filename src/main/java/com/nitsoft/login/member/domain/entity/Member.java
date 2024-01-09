@@ -27,12 +27,8 @@ public class Member extends BaseEntity {
         return member;
     }
 
-    public void setSequenceId(Long id){
-        this.id = id;
-    }
-
-    public boolean checkLoginInfo(String email, String password){
-        return this.email.equals(email) && this.password.equals(password);
+    public void editMember(String nickname){
+        this.nickname = nickname;
     }
 
     @Builder
