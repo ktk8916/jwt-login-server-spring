@@ -1,11 +1,11 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3307/board
-    username: root
-    password: admin
+    url: jdbc:mysql://192.168.50.46:3306/board
+    username: nitsoft
+    password: 1234
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         show_sql: true
@@ -15,4 +15,4 @@ cors:
   allow-origin: http://192.168.50.103:3000, http://localhost:5173, http://localhost:3000
 
 jwt:
-  secret: dadadadafajfkhajkdhakdhajkfdhalkdhjkadhajkfkahdsjkadhjkadhsajkfhajkdhajkdhajkdj
+  secret: ㄴ화ㅣㅁ노아ㅣ모어ㅏ모어ㅏ모러ㅏㅁ놀너ㅏ몽마러ㅏ노마ㅓ오머ㅏ오머ㅏㅇㅁㅇ머라ㅣㅁ아ㅣㅁ오ㅓㅏㅁ오ㅓㅁ
