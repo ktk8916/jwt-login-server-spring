@@ -10,7 +10,7 @@ public enum ExceptionType {
 
     // auth
     MEMBER_NOT_FOUND(HttpStatus.UNAUTHORIZED, "member not found"),
-    EMAIL_ALREADY_REGISTERED(HttpStatus.BAD_REQUEST, "email already registered"),
+    EMAIL_ALREADY_REGISTERED(HttpStatus.CONFLICT, "email already registered"),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "invalid password"),
 
     // jwt
