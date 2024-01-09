@@ -21,6 +21,11 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @GetMapping("/duplication/email/{email}")
+    public void checkEmailExist(@PathVariable String email){
+        authService.checkEmailExist(email);
+    }
+
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     public TokenResponse signup(

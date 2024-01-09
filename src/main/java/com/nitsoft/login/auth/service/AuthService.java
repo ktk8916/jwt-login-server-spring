@@ -29,11 +29,7 @@ public class AuthService {
 
     @Transactional
     public TokenResponse signup(SignupRequest request){
-        Optional<Member> optionalMember = memberRepository.findByEmail(request.email());
-
-        if(optionalMember.isPresent()){
-            throw new ApiException(EMAIL_ALREADY_REGISTERED);
-        }
+        checkEmailExist(request.email());
 
         Member member = Member.builder()
                 .email(request.email())
@@ -46,6 +42,7 @@ public class AuthService {
         return issueToken(savedMember);
     }
 
+
     @Transactional
     public TokenResponse login(LoginRequest request){
         Member member = memberRepository.findByEmail(request.email())
@@ -56,6 +53,14 @@ public class AuthService {
         }
 
         return issueToken(member);
+    }
+
+    public void checkEmailExist(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+
+        if(optionalMember.isPresent()){
+            throw new ApiException(EMAIL_ALREADY_REGISTERED);
+        }
     }
 
     @Transactional
