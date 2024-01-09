@@ -5,11 +5,11 @@ import com.nitsoft.login.auth.domain.request.SignupRequest;
 import com.nitsoft.login.auth.domain.response.TokenResponse;
 import com.nitsoft.login.auth.service.AuthService;
 import com.nitsoft.login.global.jwt.JwtService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,7 +42,6 @@ public class AuthController {
 
     @PostMapping("/logout")
     public void logout(){
-        // TODO : 일단 rdb로 logout구현..?
     }
 
     @GetMapping("/renew")
@@ -59,9 +58,20 @@ public class AuthController {
             HttpServletResponse servletResponse,
             String refreshToken
     ){
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge((int)JwtService.REFRESH_TOKEN_EXPIRATION_TIME / 1000);
-        servletResponse.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                .path("/")
+                .domain("localhost")
+                .sameSite("")
+                .secure(true)
+                .httpOnly(true)
+                .maxAge(JwtService.REFRESH_TOKEN_EXPIRATION_TIME)
+                .build();
+        servletResponse.addHeader("Set-Cookie", cookie.toString());
+
+//        Cookie cookie = new Cookie("refreshToken", refreshToken);
+//        cookie.setHttpOnly(true);
+//        cookie.setMaxAge((int)JwtService.REFRESH_TOKEN_EXPIRATION_TIME / 1000);
+//        cookie.setPath("/");
+//        servletResponse.addCookie(cookie);
     }
 }
