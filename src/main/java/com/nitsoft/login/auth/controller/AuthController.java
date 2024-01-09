@@ -5,9 +5,11 @@ import com.nitsoft.login.auth.domain.request.SignupRequest;
 import com.nitsoft.login.auth.domain.response.TokenResponse;
 import com.nitsoft.login.auth.service.AuthService;
 import com.nitsoft.login.global.jwt.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +47,13 @@ public class AuthController {
     }
 
     @GetMapping("/renew")
+    public TokenResponse renew(HttpServletRequest servletRequest){
+        String authHeader = servletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeader.substring(7);
+        return authService.renew(token);
+    }
+
+    @GetMapping("/renew/cookie")
     public TokenResponse renew(
             HttpServletResponse servletResponse,
             @CookieValue String refreshToken
