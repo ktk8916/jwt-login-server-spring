@@ -31,7 +31,7 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository {
                 )
                 .limit(Pageable.getPageSize())
                 .offset(Pageable.getOffset())
-                .orderBy(board.id.asc())
+                .orderBy(board.id.desc())
                 .fetch();
 
         Long totalSize = queryFactory.select(board.count())
