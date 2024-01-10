@@ -1,8 +1,8 @@
 package com.nitsoft.login.auth.controller;
 
+import com.nitsoft.login.auth.domain.dto.LoginResponse;
 import com.nitsoft.login.auth.domain.request.LoginRequest;
 import com.nitsoft.login.auth.domain.request.SignupRequest;
-import com.nitsoft.login.auth.domain.response.TokenResponse;
 import com.nitsoft.login.auth.service.AuthService;
 import com.nitsoft.login.global.jwt.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,21 +28,21 @@ public class AuthController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public TokenResponse signup(
+    public LoginResponse signup(
             HttpServletResponse servletResponse,
             @RequestBody @Valid SignupRequest request
     ){
-        TokenResponse response = authService.signup(request);
+        LoginResponse response = authService.signup(request);
         addRefreshTokenInCookie(servletResponse, response.refreshToken());
         return response;
     }
 
     @PostMapping("/login")
-    public TokenResponse login(
+    public LoginResponse login(
             HttpServletResponse servletResponse,
             @RequestBody @Valid LoginRequest request
     ){
-        TokenResponse response = authService.login(request);
+        LoginResponse response = authService.login(request);
         addRefreshTokenInCookie(servletResponse, response.refreshToken());
         return response;
     }
@@ -52,18 +52,18 @@ public class AuthController {
     }
 
     @GetMapping("/renew")
-    public TokenResponse renew(HttpServletRequest servletRequest){
+    public LoginResponse renew(HttpServletRequest servletRequest){
         String authHeader = servletRequest.getHeader(HttpHeaders.AUTHORIZATION);
         String token = authHeader.substring(7);
         return authService.renew(token);
     }
 
     @GetMapping("/renew/cookie")
-    public TokenResponse renew(
+    public LoginResponse renew(
             HttpServletResponse servletResponse,
             @CookieValue String refreshToken
     ){
-        TokenResponse response = authService.renew(refreshToken);
+        LoginResponse response = authService.renew(refreshToken);
         addRefreshTokenInCookie(servletResponse, response.refreshToken());
         return response;
     }

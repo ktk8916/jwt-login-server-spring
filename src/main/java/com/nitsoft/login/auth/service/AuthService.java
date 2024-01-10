@@ -3,7 +3,7 @@ package com.nitsoft.login.auth.service;
 import com.nitsoft.login.auth.domain.entity.RefreshTokenLog;
 import com.nitsoft.login.auth.domain.request.LoginRequest;
 import com.nitsoft.login.auth.domain.request.SignupRequest;
-import com.nitsoft.login.auth.domain.response.TokenResponse;
+import com.nitsoft.login.auth.domain.dto.LoginResponse;
 import com.nitsoft.login.auth.repository.RefreshTokenLogRepository;
 import com.nitsoft.login.global.exception.ApiException;
 import com.nitsoft.login.global.jwt.JwtService;
@@ -28,7 +28,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public TokenResponse signup(SignupRequest request){
+    public LoginResponse signup(SignupRequest request){
         checkEmailExist(request.email());
 
         Member member = Member.builder()
@@ -44,7 +44,7 @@ public class AuthService {
 
 
     @Transactional
-    public TokenResponse login(LoginRequest request){
+    public LoginResponse login(LoginRequest request){
         Member member = memberRepository.findByEmail(request.email())
                 .orElseThrow(() -> new ApiException(MEMBER_NOT_FOUND));
 
@@ -64,7 +64,7 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenResponse renew(String refreshToken) {
+    public LoginResponse renew(String refreshToken) {
         if(!jwtService.isValidToken(refreshToken)){
             throw new ApiException(INVALID_REFRESH_TOKEN);
         }
@@ -79,10 +79,10 @@ public class AuthService {
 
         refreshTokenLog.updateRefreshToken(newRefreshToken);
 
-        return TokenResponse.of(newAccessToken, newRefreshToken);
+        return LoginResponse.of(newAccessToken, newRefreshToken, member);
     }
 
-    private TokenResponse issueToken(Member member){
+    private LoginResponse issueToken(Member member){
         String accessToken = jwtService.generateAccessToken(member);
         String refreshToken = jwtService.generateRefreshToken(member);
 
@@ -97,6 +97,6 @@ public class AuthService {
                             refreshTokenLogRepository.save(tokenLog);
                         });
 
-        return TokenResponse.of(accessToken, refreshToken);
+        return LoginResponse.of(accessToken, refreshToken, member);
     }
 }
