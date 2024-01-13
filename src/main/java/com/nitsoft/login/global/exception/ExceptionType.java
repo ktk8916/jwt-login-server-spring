@@ -21,6 +21,7 @@ public enum ExceptionType {
     //board
     UNAUTHORIZED_CONTENT_OWNER(HttpStatus.FORBIDDEN, "unauthorized content owner"),
     CONTENT_NOT_FOUND(HttpStatus.NOT_FOUND, "content not found"),
+
     ;
 
     private final HttpStatus httpStatus;
